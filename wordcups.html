@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>이상형 월드컵 4강</title>
+<style>
+body {
+    text-align: center;
+    font-family: sans-serif;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    margin-top: 20px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 30px;
+}
+
+.card {
+    cursor: pointer;
+}
+
+img {
+    width: 300px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 15px;
+    transition: 0.3s;
+}
+
+img:hover {
+    transform: scale(1.05);
+}
+
+.name {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<h1>이상형 월드컵 4강</h1>
+<h2 id="roundText">4강</h2>
+
+<div class="container">
+    <div class="card" onclick="selectWinner(0)">
+        <img id="img0">
+        <div class="name" id="name0"></div>
+    </div>
+
+    <div class="card" onclick="selectWinner(1)">
+        <img id="img1">
+        <div class="name" id="name1"></div>
+    </div>
+</div>
+
+<script>
+let players = [
+    { img: "1.jpg", name: "최립우" },
+    { img: "2.jpg", name: "체리" },
+    { img: "3.jpg", name: "강우진" },
+    { img: "4.jpg", name: "미웅" }
+];
+
+// 🔥 시작할 때 랜덤 섞기
+players.sort(() => Math.random() - 0.5);
+
+let currentRound = [...players];
+let nextRound = [];
+let index = 0;
+
+function showMatch() {
+    if (index >= currentRound.length) {
+        currentRound = [...nextRound];
+        nextRound = [];
+        index = 0;
+
+        if (currentRound.length === 1) {
+            document.body.innerHTML = `
+                <h1>🏆 최종 우승 🏆</h1>
+                <img src="${currentRound[0].img}" width="350">
+                <h2>${currentRound[0].name}</h2>
+            `;
+            return;
+        }
+
+        document.getElementById("roundText").innerText = "결승";
+    }
+
+    document.getElementById("img0").src = currentRound[index].img;
+    document.getElementById("name0").innerText = currentRound[index].name;
+
+    document.getElementById("img1").src = currentRound[index + 1].img;
+    document.getElementById("name1").innerText = currentRound[index + 1].name;
+}
+
+function selectWinner(choice) {
+    nextRound.push(currentRound[index + choice]);
+    index += 2;
+    showMatch();
+}
+
+showMatch();
+</script>
+
+</body>
+</html>
